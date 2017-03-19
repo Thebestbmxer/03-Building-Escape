@@ -3,17 +3,17 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
-#include "OpenDoor.generated.h"
+#include "OpenDoor2.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class BUILDINGESCAPE_03_API UOpenDoor : public UActorComponent
+class BUILDINGESCAPE_03_API UOpenDoor2 : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UOpenDoor();
+	UOpenDoor2();
 
 protected:
 	// Called when the game starts
