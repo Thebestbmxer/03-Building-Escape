@@ -31,16 +31,20 @@ void UOpenDoor2::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 	if (PressurePlate->IsOverlappingActor(ActorThatOpens))
 	{
 		UOpenDoor();
+		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
+	}
+	if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorCloseDelay)
+	{
+		UCloseDoor();
 	}
 }
 
 void UOpenDoor2::UOpenDoor()
 {
-	AActor* Owner = GetOwner();
-
-	FRotator NewRotation = FRotator(0.0f, 90.0f, 0.0f);
-
-	Owner->SetActorRotation(NewRotation);
+	Owner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
 }
 
-
+void UOpenDoor2::UCloseDoor()
+{
+	Owner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+}

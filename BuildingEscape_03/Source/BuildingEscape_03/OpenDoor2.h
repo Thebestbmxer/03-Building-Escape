@@ -24,14 +24,18 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void UOpenDoor();
+	void UCloseDoor();
 
 private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 		float OpenAngle = 90.0f;
 
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate;
+	float DoorCloseDelay = 1.f;
 
+	float LastDoorOpenTime;
 
 	AActor* ActorThatOpens; //Pawn inhearts from actor
+	AActor* Owner;
 };
