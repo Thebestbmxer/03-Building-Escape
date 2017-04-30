@@ -50,7 +50,7 @@ void UGrabber::SetupInputComponent()
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
+	if (!PhysicsHandle) { return; }	// If Physics Handle is not working
 	// if the physics handle is attached
 	if (PhysicsHandle->GrabbedComponent)
 	{
@@ -69,6 +69,7 @@ void UGrabber::Grab()
 	// If we hit something then attach a physics handle
 	if (ActorHit)
 	{
+		if (!PhysicsHandle) { return; }	// If Physics Handle is not working
 		PhysicsHandle->GrabComponentAtLocationWithRotation(
 			ComponentToGrab,
 			NAME_None, // no bones needed
@@ -80,7 +81,8 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
-		PhysicsHandle->ReleaseComponent();
+	if (!PhysicsHandle) { return; }	// If Physics Handle is not working
+	PhysicsHandle->ReleaseComponent();
 }
 
 const FHitResult UGrabber::GetFirstPhysicsBodyInReach()

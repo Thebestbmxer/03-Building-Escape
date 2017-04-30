@@ -21,6 +21,10 @@ void UOpenDoor2::BeginPlay()
 {
 	Super::BeginPlay();
 	Owner = GetOwner();
+	if (!PressurePlate)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s missing Pressure Pleate"), *GetOwner()->GetName())
+	}
 }
 
 // Called every frame
@@ -45,6 +49,8 @@ float UOpenDoor2::GetTotalMassOnPlate()
 
 	//Find all the overlaping actors
 	TArray<AActor*> OverlappingActors;
+
+	if (!PressurePlate) { return TotalMass; }	// If Pressure Plate is not working
 	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
 
 	for (const auto* Actor : OverlappingActors)
@@ -57,10 +63,12 @@ float UOpenDoor2::GetTotalMassOnPlate()
 
 void UOpenDoor2::UOpenDoor()
 {
+	if (!Owner) { return; }	// If Owner is not working
 	Owner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
 }
 
 void UOpenDoor2::UCloseDoor()
 {
+	if (!Owner) { return; }	// If Owner is not working
 	Owner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
 }
