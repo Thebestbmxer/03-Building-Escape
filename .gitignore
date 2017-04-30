@@ -56,3 +56,6 @@ BuildingEscape_03/Content/StarterContent/
 
 # VS Generated Files
 *VC.db
+*VC.opendb
+*.suo
+*.sln

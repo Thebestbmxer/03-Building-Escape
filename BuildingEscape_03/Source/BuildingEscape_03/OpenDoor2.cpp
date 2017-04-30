@@ -3,6 +3,7 @@
 #include "BuildingEscape_03.h"
 #include "OpenDoor2.h"
 
+#define OUT
 
 // Sets default values for this component's properties
 UOpenDoor2::UOpenDoor2()
@@ -19,9 +20,7 @@ UOpenDoor2::UOpenDoor2()
 void UOpenDoor2::BeginPlay()
 {
 	Super::BeginPlay();
-
 	Owner = GetOwner();
-	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 }
 
 // Called every frame
@@ -29,7 +28,7 @@ void UOpenDoor2::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (PressurePlate->IsOverlappingActor(ActorThatOpens))
+	if (GetTotalMassOnPlate() > 30.f) // TODO make into a parameter
 	{
 		UOpenDoor();
 		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
@@ -38,6 +37,22 @@ void UOpenDoor2::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 	{
 		UCloseDoor();
 	}
+}
+
+float UOpenDoor2::GetTotalMassOnPlate()
+{
+	float TotalMass = 0.f;
+
+	//Find all the overlaping actors
+	TArray<AActor*> OverlappingActors;
+	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
+
+	for (const auto* Actor : OverlappingActors)
+	{
+		TotalMass += Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
+		UE_LOG(LogTemp, Warning, TEXT("%s on pressure plate"), *Actor-> GetName())
+	}
+	return TotalMass;
 }
 
 void UOpenDoor2::UOpenDoor()
